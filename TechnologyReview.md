@@ -68,6 +68,7 @@ cons:
 PCA is dimensionality reduction method using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
 pros:
-* 
+* PCA is an awesome choice for dimensionality reduction. It minimizes sum of squared perpendicular distance to the component axis
 
-
+cons
+* Not as simple as other regression models. There is an additional step of projecting the vector of estimated regression coefficients back to the dimension of the original dataset.
