@@ -1,4 +1,5 @@
-# Shiny
+## Visualization tools evaluation
+### Shiny
 
 pros: 
 
@@ -14,7 +15,7 @@ cons:
 * most of our data will be processed using python and python packages, 
   may have some compatibility problems
 
-# Bokeh
+### Bokeh
 
 pros: 
 
@@ -27,3 +28,8 @@ cons:
 * brand new technology to all of our team members, learning curve
 * less reference can be found online
 * there is not known place to host Bokeh apps, to our knowledge. 
+
+## Statistical modeling tools evaluation
+### Python scikit learn
+### Self written up algorithms
+### ..
