@@ -67,5 +67,4 @@ cons:
 #### Principal Component Analysis
 
 
-### Self written up algorithms
-### ..
+
