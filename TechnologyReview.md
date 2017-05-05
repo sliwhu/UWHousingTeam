@@ -65,6 +65,9 @@ cons:
 * Not ideal for grouped features as LASSO will select only one feature from a group of correlated features
 
 #### Principal Component Analysis
+PCA is dimensionality reduction method using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
+pros:
+* 
 
 
