@@ -1,4 +1,5 @@
-## Visualization tools evaluation
+# Technology review
+## --Visualization tools evaluation
 ### Shiny
 
 pros: 
@@ -29,7 +30,7 @@ cons:
 * less reference can be found online
 * there is not known place to host Bokeh apps, to our knowledge. 
 
-## Statistical modeling tools evaluation
+## --Statistical modeling tools evaluation
 ### Python scikit learn
 ### Self written up algorithms
 ### ..
