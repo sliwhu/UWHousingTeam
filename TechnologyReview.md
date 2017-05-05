@@ -1,4 +1,4 @@
-Shiny
+# Shiny
 
 pros: 
 
@@ -11,7 +11,7 @@ cons:
 
 * possibly less flexibility than Bokeh 
 
-Bokeh
+# Bokeh
 
 pros: 
 
