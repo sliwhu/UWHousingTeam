@@ -51,16 +51,18 @@ pros:
 * It doesn't penalize all the feature’s estimate arbitrarily. 
 
 cons:
+* Ridge regression cant zero out the co-efficients
 
 #### Lasso regression
 LASSO is a regression analysis method that performs both variable selection and regularization in order to enhance the prediction accuracy and interpretability of the statistical model it produces. 
 pros:
-*
+* The biggest advantage of Lasso is that it produces sparse matrix. This implies that lasso can zero out coefficients and we are able to get a better sense of which features are more corelated with response.
+
 cons:
-*
+* 
 
 #### Principal Component Analysis
 
-The ridge regression has two important advantages over the linear regression. The most important one is that it penalizes the estimates. It doesn't penalize all the feature’s estimate arbitrarily. 
+
 ### Self written up algorithms
 ### ..
