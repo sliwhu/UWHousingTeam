@@ -37,10 +37,11 @@ cons:
 In linear regression, the relationships are modeled using linear predictor functions whose unknown model parameters are estimated from the data. 
 
 pros: 
-* The most important advantage of Ordinary linear regression is its simplicity. 
+* The most important advantage of Ordinary linear regression is its simplicity. If the data is normally distributed its a good method to find the rlationship between features and response
 
 cons: 
 * There is a disadvantage of overfitting the model
+
 
 #### Ridge regression
 Ridge regression solves a regression model where the loss function is the linear least squares function and regularization is given by the l2-norm. 
@@ -55,11 +56,13 @@ cons:
 
 #### Lasso regression
 LASSO is a regression analysis method that performs both variable selection and regularization in order to enhance the prediction accuracy and interpretability of the statistical model it produces. 
+
 pros:
 * The biggest advantage of Lasso is that it produces sparse matrix. This implies that lasso can zero out coefficients and we are able to get a better sense of which features are more corelated with response.
 
 cons:
-* 
+* Doesnt work well for high dimensional data
+* Not ideal for grouped features as LASSO will select only one feature from a group of correlated features
 
 #### Principal Component Analysis
 
