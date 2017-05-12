@@ -7,7 +7,7 @@ pros:
 * well developed
 * more reference can be found online
 * more familiar
-* can be hosted on shinyapps.io
+* can be hosted on shinyapps.io for free
 * some of us already have certain level of Shiny knowledge
       
 cons: 
@@ -26,9 +26,9 @@ pros:
       
 cons: 
 
-* brand new technology to all of our team members, learning curve
+* brand new technology to all of our team members, steep learning curve
 * less reference can be found online
-* there is not known place to host Bokeh apps, to our knowledge. 
+* there is not known place to host Bokeh apps like shinyapps.io, to our knowledge
 
 ## --Statistical modeling tools evaluation
 ### Python scikit learn
@@ -65,6 +65,10 @@ cons:
 * Not ideal for grouped features as LASSO will select only one feature from a group of correlated features
 
 #### Principal Component Analysis
+PCA is dimensionality reduction method using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
+pros:
+* PCA is an awesome choice for dimensionality reduction. It minimizes sum of squared perpendicular distance to the component axis
 
-
+cons
+* Not as simple as other regression models. There is an additional step of projecting the vector of estimated regression coefficients back to the dimension of the original dataset.
