@@ -197,6 +197,9 @@ class HousePriceModel(object):
         """
         return self.model
 
+    def get_model_coefficients(self):
+        return self.get_model().coef_
+
     def get_predictors(self):
         """
         Gets the model predictors.
