@@ -1,5 +1,7 @@
 """
 Contains the house price controller.
+
+DON'T USE THIS CONTROLLER!  Use the HousePriceModel in house_price_model_2.py.
 """
 from house_price_model import construct_models
 from house_price_model import get_base_date

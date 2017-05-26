@@ -1,8 +1,10 @@
 """
 Contains the house price model.
+
+DON'T USE THIS MODEL!  Use the HousePriceModel in house_price_model_2.py.
 """
-import os
 import numpy as np
+import os
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import RidgeCV
