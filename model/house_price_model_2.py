@@ -28,8 +28,8 @@ class HousePriceModel(object):
         #
         # Comment out the following lines if these values are known to be set.
         #
-        os.environ["SALES_DATA_PATH"] = '~/UW Data Science/DATA 515A/Project'
-        os.environ["SALES_DATA_FILE"] = 'Merged_Data_excel.csv'  # 'KingCountyHomeSalesData.csv'
+        # os.environ["SALES_DATA_PATH"] = '~/UW Data Science/DATA 515A/Project'
+        # os.environ["SALES_DATA_FILE"] = 'Merged_Data_excel.csv'  # 'KingCountyHomeSalesData.csv'
 
         # Declare and initialize the base date, and the scaler.
         self.base_date = HousePriceModel.create_date(2014, 1, 1)
