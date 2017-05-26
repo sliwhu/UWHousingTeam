@@ -28,8 +28,8 @@ class HousePriceModel(object):
         #
         # Comment out the following lines if these values are known to be set.
         #
-        # os.environ["SALES_DATA_PATH"] = '~/UW Data Science/DATA 515A/Project'
-        # os.environ["SALES_DATA_FILE"] = 'Merged_Data_excel.csv'  # 'KingCountyHomeSalesData.csv'
+        os.environ["SALES_DATA_PATH"] = '~/UW Data Science/DATA 515A/Project'
+        os.environ["SALES_DATA_FILE"] = 'Merged_Data_excel.csv'  # 'KingCountyHomeSalesData.csv'
 
         # Declare and initialize the base date, and the scaler.
         self.base_date = HousePriceModel.create_date(2014, 1, 1)
@@ -279,6 +279,15 @@ class HousePriceModel(object):
         self.get_model().fit(X=x_for_model, y=y_for_model)
         return None
 
+    def predict(self, features):
+        """
+        Makes a house price prediction.
+        :param features: Features of the house.
+        :return: A house price prediction
+        """
+        return self.get_model().predict(self.prepare_test_row(features))[0]\
+               + self.get_mean_response()
+
     def prepare_model_data(self):
         """
         Prepares and returns model data.  Housing data must be read first using
@@ -308,15 +317,6 @@ class HousePriceModel(object):
         model_data['location'] = np.vectorize(self.look_up_zipcode_by_string)\
             (sales_data['zipcode'].apply(str))
         return model_data
-
-    def predict(self, features):
-        """
-        Makes a house price prediction.
-        :param features: Features of the house.
-        :return: A house price prediction
-        """
-        return self.get_model().predict(self.prepare_test_row(features))[0]\
-               + self.get_mean_response()
 
     def prepare_test_row(self, home_features):
         """
