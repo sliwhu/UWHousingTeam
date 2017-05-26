@@ -61,8 +61,10 @@ button_2.on_click(reset)
 #lay_out = layout([[select1, select2, select3, select4], [button_1, button_2], [output]])
 lay_out = layout(
             children=[
-            [listprice, mortgage_period],
-            [interest_rate, house_type],
+            [listprice],
+            [mortgage_period],
+            [interest_rate],
+            [house_type],
             [button_1],
             [button_2],
             [output]
