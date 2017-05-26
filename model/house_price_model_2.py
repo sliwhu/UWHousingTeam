@@ -2,8 +2,8 @@
 Contains a house price model for King County, Washington.
 """
 import datetime as dt
-import os
 import numpy as np
+import os
 import pandas as pd
 from sklearn.linear_model import RidgeCV
 from sklearn.preprocessing import StandardScaler
