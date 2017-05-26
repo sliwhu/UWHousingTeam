@@ -13,8 +13,8 @@ from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Sl
 
 
 # Create Input Controls 
-bed = Select(title="Bedroom number:", value="0", options=['2', '3', '4', '5'])
-bath = Select(title="Bathroom number:", value="0", options=['2', '3', '4', '5'])
+bed = Select(title="Bedroom number:", value="2", options=['2', '3', '4', '5'])
+bath = Select(title="Bathroom number:", value="2", options=['2', '3', '4', '5'])
 sqft = Slider(title="Sqft:", value=1800, start=500, end=5500, step=10)
 builtyear = Slider(title="Built year:", value=2000, start=1960, end=2015, step=1)
 waterfront = Select(title="Waterfront:", value="either", options=['Yes', 'No', 'either'])
