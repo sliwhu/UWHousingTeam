@@ -2,7 +2,7 @@
 How to use this file:
 
 have the data, main_data.csv, in the same folder with this file
-type bokeh serve widgets.py in your terminal
+type bokeh serve main1.py in your terminal
 open a web brower and go to localhost:5006, the page will show
 
 '''
@@ -16,7 +16,7 @@ from bokeh.models import (
 from bokeh.models import HoverTool
 from bokeh.io import curdoc, output_file, show
 from bokeh.layouts import widgetbox, layout, column
-from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph
+from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Panel, Tabs
 from bokeh.plotting import figure, show, output_server
 
 # create widgets
@@ -68,11 +68,21 @@ update()
 button_1.on_click(submit)
 button_1.on_click(update)
 
-sizing_mode = 'fixed'
-
 #inputs = widgetbox(children=[select1, select2, select3, select4, button_1, button_2], sizing_mode=sizing_mode)
 #lay_out = layout([inputs, plot], sizing_mode=sizing_mode)
 
-lay_out = layout([[select1, select2, select3, select4], [button_1, button_2], [output, plot]])
+#lay_out = layout([[select1, select2], [select3, select4, plot], [button_1, button_2], [output]])
+
+# How to do tabs
+
+l1 = layout(children=[[select1, select2], [select3, select4, plot], [button_1, button_2], [output]], sizing_mode='fixed')
+l2 = layout(children=[[select1, select2], [select3, select4, plot], [button_1, button_2], [output]], sizing_mode='fixed')
+
+tab1 = Panel(child=l1,title="Housing Price Prediction")
+tab2 = Panel(child=l2,title="Bidding Price Prediction")
+
+tabs = Tabs(tabs=[tab1, tab2])
+
+curdoc().add_root(tabs)
 
 curdoc().add_root(lay_out)
