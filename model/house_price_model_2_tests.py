@@ -117,7 +117,7 @@ class MyTestCase(unittest.TestCase):
         column_values = pd.Series((1, 2, 3, 4, 5))
 
         # Declare and initialize the source data frame, and give it the test
-        # column and column values
+        # column and column values.
         source = pd.DataFrame()
         source[column_name] = column_values
 
@@ -191,7 +191,7 @@ class MyTestCase(unittest.TestCase):
         :return: True or False
         """
 
-        # Just whether the model is a RidgeCV model, and whether
+        # Test whether the model is a RidgeCV model, and whether
         # the coefficients from the model match.
         model = self.house_price_model.get_model()
         return self.assertTrue(isinstance(model, RidgeCV)) \
