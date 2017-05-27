@@ -300,7 +300,7 @@ class MyTestCase(unittest.TestCase):
                      50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
                      60, 61, 62, 63, 64, 65)
 
-        # Assert that lookup_zipcode_by_number returns the right value for
+        # Assert that lookup_zipcode_by_string returns the right value for
         # each zip code.
         return self.assertListEqual(
             [self.house_price_model.look_up_zipcode_by_string(zipcode)
@@ -310,7 +310,7 @@ class MyTestCase(unittest.TestCase):
         """
         Performs a test house price prediction for 1817 N 51st St,
         Seattle, WA, 98103.
-        :return: None
+        :return: True or False
         """
 
         # Declare and initialize a test row.
@@ -335,7 +335,7 @@ class MyTestCase(unittest.TestCase):
         """
         Performs a test house price prediction for 5218 Greenwood Ave N,
         Seattle, WA, 98103.
-        :return: None
+        :return: True or False
         """
 
         # Declare and initialize a test row.
@@ -360,7 +360,7 @@ class MyTestCase(unittest.TestCase):
         """
         Performs a test house price prediction for 216 Pike St SE,
         Auburn, WA 98002
-        :return: None
+        :return: True or False
         """
 
         # Declare and initialize a test row.
