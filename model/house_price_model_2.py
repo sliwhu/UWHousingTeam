@@ -295,10 +295,11 @@ class HousePriceModel(object):
         assert self.housing_data_read, 'A model cannot be built because the ' \
                                        'housing data has not yet been read.'
 
-        # Prepare the model data.  Isolate the response, and calculate its
-        # mean.  Isolate the predictors.
+        # Prepare the model data, and isolate the response.
         model_data = self.prepare_model_data()
         response = model_data.price
+
+        # Calculate the mean of the response, and isolate the predictors.
         self.mean_response = np.mean(response)
         self.predictors = model_data.drop('price', axis=1)
 

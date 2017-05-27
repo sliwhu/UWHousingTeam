@@ -6,6 +6,7 @@ import unittest
 import pandas as pd
 from dateutil.parser import parse
 from house_price_model_2 import HousePriceModel
+from sklearn.linear_model import RidgeCV
 from sklearn.preprocessing.data import StandardScaler
 
 # Note: It is expected that the following environment variables will be
@@ -19,6 +20,16 @@ from sklearn.preprocessing.data import StandardScaler
 class MyTestCase(unittest.TestCase):
     """
     Contains unit tests for the 2nd house price model.
+
+    The following methods in HousingPriceModel do not have independent tests
+    here, and are presumed to be sufficiently tested from calls through the
+    other unit tests:
+
+    1. initialize_model
+    2. build_model
+    3. prepare_model_data
+    4. prepare_test_row
+    5. read_housing_data
     """
 
     def __init__(self, *args, **kwargs):
@@ -53,7 +64,8 @@ class MyTestCase(unittest.TestCase):
         # Declare and initialize the expected results of the test dates
         # conversion.  Convert the test dates.
         expected = (1, 2, 31, 32, 59, 60, 366, 731, 790, 791)
-        received = self.house_price_model.calculate_sale_day_by_date(pd.Series(dates))
+        received = self.house_price_model.calculate_sale_day_by_date\
+            (pd.Series(dates))
 
         # Assert that all received test dates match their expected values.
         return self.assertListEqual(received.tolist(),
@@ -68,6 +80,13 @@ class MyTestCase(unittest.TestCase):
             self.house_price_model.calculate_sale_day_by_day(
                 2016, 2, 29) == 790)
 
+    def test_can_predict(self):
+        """
+        Tests HousePriceModel.can_predict.
+        :return: True or False
+        """
+        return self.assertTrue(self.house_price_model.can_predict)
+
     def test_create_date(self):
         """
         Tests HousePriceModel.create_date.
@@ -81,7 +100,7 @@ class MyTestCase(unittest.TestCase):
 
         # Create the date object, and assert all resulting fields are what we
         # expect.
-        date = self.house_price_model.create_date(year, month, day)
+        date = HousePriceModel.create_date(year, month, day)
         self.assertTrue(date.year == year and
                         date.month == month and
                         date.day == day)
@@ -103,11 +122,10 @@ class MyTestCase(unittest.TestCase):
         source[column_name] = column_values
 
         # Declare and initialize the destination date frame, and copy the
-        # source column and values.  Get the destination column values from
-        # the destination.
+        # source column and values.
         destination = pd.DataFrame()
-        self.house_price_model.create_model_feature(destination, source,
-                                                    column_name)
+        HousePriceModel.create_model_feature(destination, source,
+                                             column_name)
 
         # Get the destination values from the destination, and assert that all
         # received values match their expected values.
@@ -127,7 +145,7 @@ class MyTestCase(unittest.TestCase):
         day = 29
 
         # Format the date, then parse it.
-        date = self.house_price_model.format_date(year, month, day)
+        date = HousePriceModel.format_date(year, month, day)
         parsed_date = parse(date)
 
         # Insure that the parsed date matches the expected values.
@@ -152,6 +170,13 @@ class MyTestCase(unittest.TestCase):
                                base_date.month == month and
                                base_date.day == day)
 
+    def test_get_day_offset(self):
+        """
+        Tests HousePriceModel.get_day_offset.
+        :return: True of False
+        """
+        self.assertTrue(HousePriceModel.get_day_offset() == 1)
+
     def test_get_mean_response(self):
         """
         Tests HousePriceModel.get_mean_response.
@@ -166,11 +191,12 @@ class MyTestCase(unittest.TestCase):
         :return: True or False
         """
 
-        # Just test whether the coefficients from the model match.
+        # Just whether the model is a RidgeCV model, and whether
+        # the coefficients from the model match.
         model = self.house_price_model.get_model()
-        self.assertListEqual(list(model.coef_),
-                             list(self.house_price_model.
-                                  get_model_coefficients()))
+        return self.assertTrue(isinstance(model, RidgeCV)) \
+               and self.assertListEqual(list(model.coef_),
+                                        list(self.house_price_model.get_model_coefficients()))
 
     def test_get_model_coefficients(self):
         """
@@ -213,11 +239,77 @@ class MyTestCase(unittest.TestCase):
         return self.assertTrue(isinstance(
             self.house_price_model.get_zip_code_dict(), dict))
 
+    def test_lookup_zipcode_by_number(self):
+        """
+        Tests HousePriceModel.lookup_zip_code_by_number.
+        :return: True or False
+        """
+
+        # Declare and initialize the zip codes tuple.
+        zip_codes = (98002, 98168, 98032, 98001, 98148, 98023, 98188, 98003, 98030, 98031,
+                     98198, 98055, 98178, 98042, 98022, 98106, 98092, 98058, 98108, 98146,
+                     98038, 98133, 98118, 98056, 98155, 98126, 98019, 98014, 98028, 98166,
+                     98125, 98070, 98011, 98059, 98034, 98065, 98136, 98072, 98117, 98107,
+                     98103, 98144, 98029, 98027, 98007, 98116, 98115, 98122, 98052, 98008,
+                     98177, 98053, 98077, 98074, 98075, 98199, 98033, 98005, 98119, 98006,
+                     98105, 98109, 98102, 98112, 98040, 98004)
+
+        # Declare and initialize the locations tuple.
+        locations = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                     20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                     30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+                     40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+                     50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+                     60, 61, 62, 63, 64, 65)
+
+        # Assert that lookup_zipcode_by_number returns the right value for
+        # each zip code.
+        return self.assertListEqual(
+            [self.house_price_model.look_up_zipcode_by_number(zipcode)
+             for zipcode in zip_codes], list(locations))
+
+    def test_lookup_zipcode_by_string(self):
+        """
+        Tests HousePriceModel.lookup_zip_code_by_string.
+        :return: True or False
+        """
+
+        # Declare and initialize the zip codes tuple.
+        zip_codes = ('98002', '98168', '98032', '98001', '98148',
+                     '98023', '98188', '98003', '98030', '98031',
+                     '98198', '98055', '98178', '98042', '98022',
+                     '98106', '98092', '98058', '98108', '98146',
+                     '98038', '98133', '98118', '98056', '98155',
+                     '98126', '98019', '98014', '98028', '98166',
+                     '98125', '98070', '98011', '98059', '98034',
+                     '98065', '98136', '98072', '98117', '98107',
+                     '98103', '98144', '98029', '98027', '98007',
+                     '98116', '98115', '98122', '98052', '98008',
+                     '98177', '98053', '98077', '98074', '98075',
+                     '98199', '98033', '98005', '98119', '98006',
+                     '98105', '98109', '98102', '98112', '98040',
+                     '98004')
+
+        # Declare and initialize the locations tuple.
+        locations = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                     10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                     20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                     30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+                     40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+                     50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+                     60, 61, 62, 63, 64, 65)
+
+        # Assert that lookup_zipcode_by_number returns the right value for
+        # each zip code.
+        return self.assertListEqual(
+            [self.house_price_model.look_up_zipcode_by_string(zipcode)
+             for zipcode in zip_codes], list(locations))
+
     def test_prediction_one(self):
         """
         Performs a test house price prediction for 1817 N 51st St,
         Seattle, WA, 98103.
-
         :return: None
         """
 
@@ -243,7 +335,6 @@ class MyTestCase(unittest.TestCase):
         """
         Performs a test house price prediction for 5218 Greenwood Ave N,
         Seattle, WA, 98103.
-
         :return: None
         """
 
@@ -264,6 +355,31 @@ class MyTestCase(unittest.TestCase):
         # Make a prediction and check it.
         return self.assertAlmostEqual(self.house_price_model.predict(features),
                                       740494., delta=self.price_accuracy)
+
+    def test_prediction_three(self):
+        """
+        Performs a test house price prediction for 216 Pike St SE,
+        Auburn, WA 98002
+        :return: None
+        """
+
+        # Declare and initialize a test row.
+        features = {'sale_day':
+                        self.house_price_model.calculate_sale_day_by_day(2017, 7, 1),
+                    'bathrooms': 1,
+                    'sqft_living': 1060,
+                    'sqft_lot': 8000,
+                    'waterfront': 0,
+                    'view': 0,
+                    'condition': 5,
+                    'grade': 6,
+                    'location':
+                        self.house_price_model.look_up_zipcode_by_string('98002')
+                   }
+
+        # Make a prediction and check it.
+        return self.assertAlmostEqual(self.house_price_model.predict(features),
+                                      197570., delta=self.price_accuracy)
 
 
 if __name__ == '__main__':
