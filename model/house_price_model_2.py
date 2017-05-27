@@ -386,11 +386,23 @@ class HousePriceModel(object):
         :return: None
         """
 
-        # Construct the sales data path.
-        sales_data_path =\
-            os.path.join(os.environ['SALES_DATA_PATH'], os.environ['SALES_DATA_FILE'])
+        # Get the SALES_DATA_FILE and SALES_DATA_PATH environment variables.
+        sales_data_file = os.environ.get('SALES_DATA_FILE')
+        sales_data_path = os.environ.get('SALES_DATA_PATH')
 
-        # Read the sales data, set the flag and return.
-        self.sales_data = pd.read_csv(sales_data_path, parse_dates=['date'])
+        # Assert that both environment variables are set.
+        assert (sales_data_file is not None and
+                sales_data_path is not None), 'The environment variables ' \
+                                              '\'SALES_DATA_FILE\' and' \
+                                              '\'SALES_DATA_PATH\' must be ' \
+                                              'set before the housing data ' \
+                                              'can be read.'
+
+        # Construct the full sales data file path, and read the sales data.
+        self.sales_data = pd.read_csv(os.path.join(sales_data_path,
+                                                   sales_data_file),
+                                      parse_dates=['date'])
+
+        # Set the flag, and return.
         self.housing_data_read = True
         return None
