@@ -1,9 +1,10 @@
 """
 Contains a house price model for King County, Washington.
 """
+import os
+
 import datetime as dt
 import numpy as np
-import os
 import pandas as pd
 from sklearn.linear_model import RidgeCV
 from sklearn.preprocessing import StandardScaler
@@ -13,6 +14,12 @@ class HousePriceModel(object):
     """
     Contains a house price model for King County, Washington.
     """
+
+    # pylint: disable=too-many-instance-attributes
+    # We are using nine here instead of a maximum of seven.
+
+    # pylint: disable=too-many-public-methods
+    # We are using 23 here instead of a maximum of 20.
 
     def __init__(self):
         """
@@ -106,8 +113,10 @@ class HousePriceModel(object):
 
         # Declare and initialize member variables that will be set during
         # intialize_model().
+        self.housing_data_read = False
         self.mean_response = 0
         self.model = RidgeCV()
+        self.model_built = False
         self.predictors = pd.DataFrame()
         self.sales_data = pd.DataFrame()
         return None
@@ -131,6 +140,14 @@ class HousePriceModel(object):
         """
         return (HousePriceModel.create_date(year, month, day) -
                 self.get_base_date()).days + HousePriceModel.get_day_offset()
+
+    @property
+    def can_predict(self):
+        """
+        Determines if it is possible to make a prediction.
+        :return: True if a prediction can be made, false otherwise
+        """
+        return self.housing_data_read and self.model_built
 
     @staticmethod
     def create_date(year, month, day):
@@ -195,9 +212,19 @@ class HousePriceModel(object):
         Gets the model.
         :return: The model
         """
+        assert self.housing_data_read, 'Housing data has not yet been read.'
         return self.model
 
     def get_model_coefficients(self):
+        """
+        Gets the model coefficients.
+        :return: The model coefficients
+        """
+
+        # Make sure there is a model before trying to return its
+        # coefficients.
+        assert self.can_predict, 'There are coefficients until a model is' \
+                                 'built.'
         return self.get_model().coef_
 
     def get_predictors(self):
@@ -264,6 +291,10 @@ class HousePriceModel(object):
         :return: None
         """
 
+        # The housing data must have been read before a model can be built.
+        assert self.housing_data_read, 'A model cannot be built because the ' \
+                                       'housing data has not yet been read.'
+
         # Prepare the model data.  Isolate the response, and calculate its
         # mean.  Isolate the predictors.
         model_data = self.prepare_model_data()
@@ -275,8 +306,9 @@ class HousePriceModel(object):
         x_for_model = self.get_scaler().fit_transform(self.get_predictors())
         y_for_model = np.array(response) - self.get_mean_response()
 
-        # Fit the model.
+        # Fit the model.  Set the flag and return.
         self.get_model().fit(X=x_for_model, y=y_for_model)
+        self.model_built = True
         return None
 
     def predict(self, features):
@@ -285,6 +317,12 @@ class HousePriceModel(object):
         :param features: Features of the house.
         :return: A house price prediction
         """
+
+        # Assert that a prediction can be made.
+        assert self.can_predict, 'A prediction cannot be made because the ' \
+                                 'model has not yet been built.'
+
+        # Make the prediction.
         return self.get_model().predict(self.prepare_test_row(features))[0]\
                + self.get_mean_response()
 
@@ -295,11 +333,17 @@ class HousePriceModel(object):
         :return: Model data
         """
 
-        # Create an empty data frame.
+        # The housing data must have been read before model data can be
+        # prepared.
+        assert self.housing_data_read, 'Model data cannot be prepared ' \
+                                       'because the housing data has ' \
+                                       'not yet been read.'
+
+        # Create an empty data frame, and get the sales data.
         model_data = pd.DataFrame()
+        sales_data = self.get_sales_data()
 
         # Extract the sales date as an integer relative to the base date.
-        sales_data = self.get_sales_data()
         model_data['sale_day'] =\
             self.calculate_sale_day_by_date(sales_data['date'])
 
@@ -324,6 +368,14 @@ class HousePriceModel(object):
         :param home_features: A dictionary of home features
         :return: A row ready for price prediction
         """
+
+        # Assert that the model has been built.
+        assert self.model_built, 'The model must be built before a test row ' \
+                                 'can be prepared.'
+
+        # Create a new data frame the given features, reorder the rows to
+        # match the existing predictors, and standardize the row to what the
+        # model expects.  Return the new row.
         new_row = pd.DataFrame(home_features, index=[0])
         new_row = new_row[self.get_predictors().columns.tolist()]
         return self.get_scaler().transform(new_row)
@@ -334,8 +386,11 @@ class HousePriceModel(object):
         :return: None
         """
 
-        # Construct the sales data path, and read the sales data.
+        # Construct the sales data path.
         sales_data_path =\
             os.path.join(os.environ['SALES_DATA_PATH'], os.environ['SALES_DATA_FILE'])
+
+        # Read the sales data, set the flag and return.
         self.sales_data = pd.read_csv(sales_data_path, parse_dates=['date'])
+        self.housing_data_read = True
         return None
