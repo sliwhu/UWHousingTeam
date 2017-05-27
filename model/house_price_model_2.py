@@ -223,7 +223,7 @@ class HousePriceModel(object):
 
         # Make sure there is a model before trying to return its
         # coefficients.
-        assert self.can_predict, 'There are coefficients until a model is' \
+        assert self.can_predict, 'There are no coefficients until a model is' \
                                  'built.'
         return self.get_model().coef_
 
