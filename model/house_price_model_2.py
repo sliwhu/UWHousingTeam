@@ -324,8 +324,8 @@ class HousePriceModel(object):
                                  'model has not yet been built.'
 
         # Make the prediction.
-        return self.get_model().predict(self.prepare_test_row(features))[0]\
-               + self.get_mean_response()
+        return round(self.get_model().predict(
+            self.prepare_test_row(features))[0] + self.get_mean_response(), 2)
 
     def prepare_model_data(self):
         """
