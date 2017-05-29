@@ -64,7 +64,7 @@ plot.add_tools(my_hover)
 def update():
     if waterfront.value == 'Either':
         waterfront.value = '0.5'
-    elif waterfront.value == 'yes':
+    elif waterfront.value == 'Yes':
         waterfront.value = '1'
     else:
         waterfront.value = '0'
