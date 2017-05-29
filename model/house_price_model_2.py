@@ -283,7 +283,7 @@ class HousePriceModel(object):
         if zipcode in zipcode_dict:
             return zipcode_dict.get(zipcode)[0]
         else:
-            return np.nan
+            return 0
 
     def build_model(self):
         """
@@ -324,8 +324,8 @@ class HousePriceModel(object):
                                  'model has not yet been built.'
 
         # Make the prediction.
-        return round(self.get_model().predict(
-            self.prepare_test_row(features))[0] + self.get_mean_response(), 2)
+        return round(max(0., self.get_model().predict(
+            self.prepare_test_row(features))[0] + self.get_mean_response()), 2)
 
     def prepare_model_data(self):
         """
