@@ -2,7 +2,9 @@
 How to use this file:
 have the data, main_data.csv, and the machine learning model file, house_price_model_2.py, in the same folder with this file
 change data path in the house_price_model_2.py:
-
+for windows user - 
+os.environ["SALES_DATA_PATH"] = r'the path where Merged_Data.csv is saved'
+os.environ["SALES_DATA_FILE"] = 'Merged_Data.csv'  
 type bokeh serve --show main1.py in your terminal
 the page will show at localhost:5006
 """
