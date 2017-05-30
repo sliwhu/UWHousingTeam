@@ -16,10 +16,10 @@ class HousePriceModel(object):
     """
 
     # pylint: disable=too-many-instance-attributes
-    # We are using nine here instead of a maximum of seven.
+    # We are using ten here instead of a maximum of seven.
 
     # pylint: disable=too-many-public-methods
-    # We are using 23 here instead of a maximum of 20.
+    # We are using 24 here instead of a maximum of 20.
 
     def __init__(self):
         """
@@ -111,8 +111,17 @@ class HousePriceModel(object):
                              '98004': (65, 1356524.0)
                             }
 
+        # Declare and initialize the dictionary of fields that will be
+        # converted to an exponential value, along with the factor to
+        # be applied to each value before taking the exponent.
+        self.exponent_table = {'sale_day': 3.193552e-4,
+                               'bathrooms': 3.724330e-1,
+                               'sqft_lot': 1.209000e-06,
+                               'condition': 3.372000e-2,
+                               'grade': 3.140530e-1}
+
         # Declare and initialize member variables that will be set during
-        # intialize_model().
+        # initialize_model().
         self.housing_data_read = False
         self.mean_response = 0
         self.model = RidgeCV()
@@ -121,14 +130,42 @@ class HousePriceModel(object):
         self.sales_data = pd.DataFrame()
         return None
 
+    def build_model(self):
+        """
+        Builds the model.
+        :return: None
+        """
+
+        # The housing data must have been read before a model can be built.
+        assert self.housing_data_read, 'A model cannot be built because the ' \
+                                       'housing data has not yet been read.'
+
+        # Prepare the model data, and isolate the response.
+        model_data = self.prepare_model_data()
+        response = model_data.price
+
+        # Calculate the mean of the response, and isolate the predictors.
+        self.mean_response = np.mean(response)
+        self.predictors = model_data.drop('price', axis=1)
+
+        # Prepare the predictors and response for modeling.
+        x_for_model = self.get_scaler().fit_transform(self.get_predictors())
+        y_for_model = np.array(response) - self.get_mean_response()
+
+        # Fit the model.  Set the flag and return.
+        self.get_model().fit(X=x_for_model, y=y_for_model)
+        self.model_built = True
+        return None
+
     def calculate_sale_day_by_date(self, date):
         """
         Calculates sales days for a date series.
         :param date: A date series
         :return: A series of sales days
         """
-        return (date - self.get_base_date())\
-                   .astype('timedelta64[D]').astype(int) + HousePriceModel.get_day_offset()
+        return (date - self.get_base_date()).\
+            astype('timedelta64[D]').astype(int) +\
+            HousePriceModel.get_day_offset()
 
     def calculate_sale_day_by_day(self, year, month, day):
         """
@@ -148,6 +185,26 @@ class HousePriceModel(object):
         :return: True if a prediction can be made, false otherwise
         """
         return self.housing_data_read and self.model_built
+
+    def convert_exponential_columns(self, model_data):
+        """
+        Exponentiates the values of certain features.
+        :param model_data: The model data to examine for the desired
+        conversion features
+        :return: None
+        """
+
+        # Cycle for each column in the model data.  Is the first/next
+        # column in the exponent table?
+        for column in model_data:
+            if column in self.exponent_table:
+
+                # The column is in the exponent table.  Convert the value
+                # of the feature to the exponent of the value in the table
+                # times the existing model feature value.
+                model_data[column] = np.exp(self.exponent_table.get(column) *
+                                            model_data[column])
+        return None
 
     @staticmethod
     def create_date(year, month, day):
@@ -279,38 +336,14 @@ class HousePriceModel(object):
         :param zipcode: The zip code
         :return: A zip code location code
         """
+
+        # Get the zip code dictionary, and assert that the given zip code is
+        # in the dictionary.  Return the location code for the given zip code.
         zipcode_dict = self.get_zip_code_dict()
-        if zipcode in zipcode_dict:
-            return zipcode_dict.get(zipcode)[0]
-        else:
-            return 0
-
-    def build_model(self):
-        """
-        Builds the model.
-        :return: None
-        """
-
-        # The housing data must have been read before a model can be built.
-        assert self.housing_data_read, 'A model cannot be built because the ' \
-                                       'housing data has not yet been read.'
-
-        # Prepare the model data, and isolate the response.
-        model_data = self.prepare_model_data()
-        response = model_data.price
-
-        # Calculate the mean of the response, and isolate the predictors.
-        self.mean_response = np.mean(response)
-        self.predictors = model_data.drop('price', axis=1)
-
-        # Prepare the predictors and response for modeling.
-        x_for_model = self.get_scaler().fit_transform(self.get_predictors())
-        y_for_model = np.array(response) - self.get_mean_response()
-
-        # Fit the model.  Set the flag and return.
-        self.get_model().fit(X=x_for_model, y=y_for_model)
-        self.model_built = True
-        return None
+        assert zipcode in zipcode_dict, 'A zip code unknown to King County ' \
+                                        'has been encountered: ' \
+                                        '\'{}\'.'.format(zipcode)
+        return zipcode_dict.get(zipcode)[0]
 
     def predict(self, features):
         """
@@ -361,6 +394,9 @@ class HousePriceModel(object):
         HousePriceModel.create_model_feature(model_data, sales_data, 'grade')
         model_data['location'] = np.vectorize(self.look_up_zipcode_by_string)\
             (sales_data['zipcode'].apply(str))
+
+        # Convert any required features to exponential, and return the model data.
+        self.convert_exponential_columns(model_data)
         return model_data
 
     def prepare_test_row(self, home_features):
@@ -379,6 +415,10 @@ class HousePriceModel(object):
         # model expects.  Return the new row.
         new_row = pd.DataFrame(home_features, index=[0])
         new_row = new_row[self.get_predictors().columns.tolist()]
+
+        # Convert any required features to exponential.  Scale the row, and
+        # return it.
+        self.convert_exponential_columns(new_row)
         return self.get_scaler().transform(new_row)
 
     def read_housing_data(self):
