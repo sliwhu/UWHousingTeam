@@ -1,12 +1,14 @@
 """
 How to use this file:
 have the data, main_data.csv, and the machine learning model file, house_price_model_2.py, in the same folder with this file
-change data path in the house_price_model_2.py:
+
+change data path follow instructions in the house_price_model_2.py file:
 for windows user - 
-os.environ["SALES_DATA_PATH"] = r'the path where Merged_Data.csv is saved'
-os.environ["SALES_DATA_FILE"] = 'Merged_Data.csv'  
-type bokeh serve --show main1.py in your terminal
-the page will show at localhost:5006
+os.environ["SALES_DATA_PATH"] = r'the path where Merged_Data.csv is saved', e.g.: "~/directory"
+os.environ["SALES_DATA_FILE"] = 'Merged_Data.csv'
+
+type bokeh serve --port 5001 main2.py in your terminal
+Then you may go to the FirstStop landing page to click the predicting price link
 """
 import pandas as pd
 from bokeh.io import output_file, show, save, curdoc, reset_output
