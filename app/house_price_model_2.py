@@ -35,7 +35,7 @@ class HousePriceModel(object):
         #
         # Comment out the following lines if these values are known to be set.
         #
-        os.environ["SALES_DATA_PATH"] = r'C:\Users\zhuangmg\Downloads\UWHousingTeam\UWHousingTeam\data'
+        os.environ["SALES_DATA_PATH"] = r'C:\Users\Lisa\Projects\House\UWHousingTeam\UWHousingTeam\data'
         os.environ["SALES_DATA_FILE"] = 'Merged_Data.csv'  
 
         # Declare and initialize the base date, and the scaler.

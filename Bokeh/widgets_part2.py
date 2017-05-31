@@ -42,10 +42,10 @@ def bidding_price(zipcode,list_price):
 def submit():
     #these are made up coefficients for now
     value = bidding_price(float(zipcode.value), float(listprice.value))
-    output.text = 'Your suggested bidding price is: ' + str(value) + ' $'
+    output.text = 'Your suggested bidding price is: ' + str(int(value)) + ' $'
     
 def reset():
-    reset_output()
+    #reset_output()
     output.text = None
 
 button_1.on_click(submit)

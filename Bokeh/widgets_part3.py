@@ -48,10 +48,10 @@ def monthly_expenses(list_price, mortgage_period,interest_rate,house_type):
 def submit():
     #these are made up coefficients for now
     value = monthly_expenses(float(listprice.value), float(mortgage_period.value), float(interest_rate.value), house_type.value)
-    output.text = 'Your estimated monthly cost is: ' + str(value) + ' $'
+    output.text = 'Your estimated monthly cost is: ' + str(int(value)) + ' $'
     
 def reset():
-    reset_output()
+    #reset_output()
     output.text = None
 
 button_1.on_click(submit)
