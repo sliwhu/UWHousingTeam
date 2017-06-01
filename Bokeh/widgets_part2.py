@@ -14,6 +14,7 @@ from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Sl
 import numpy as np
 import pandas as pd
 
+Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title_thinner.PNG" alt="" />""")
 
 # Create Input Controls 
 listprice = TextInput(title="enter list price/predict price here ($)")
