@@ -17,12 +17,25 @@ from bokeh.models import (
   GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool, Patches, HoverTool
 )
 from bokeh.layouts import widgetbox, layout, column
-from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Panel, Tabs
+from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Panel, Tabs, Div
 from bokeh.plotting import figure, show
 from house_price_model_2 import HousePriceModel
 
 model = HousePriceModel()
 model.initialize_model()
+
+#Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title.PNG" />""")
+
+Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title_thinner.PNG" alt="" />""")
+#delim1 = Div(text="""<h2><span style="color: #800080;">STEP 1: Please select the first set of inputs.&nbsp;</span></h2>""")
+delim1 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 1:</span></h2>""")
+delim2 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 2:</span></h2>""")
+delim3 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 3:</span></h2>""")
+delim4 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>Almost Done. Just Submit!</span></h2>""")
+delim5 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>Ta Daa .....!</span></h2>""")
+#Title = Div(text="""<blockquote>
+#<h4 style="text-align: left;">You are one step closer to your dream home.&nbsp;Please enter your inputs below</h4>
+#</blockquote>""")
 
 # Import dataset, the first sheet in the merged dataset
 main_data = pd.read_csv("main_data.csv", sep = ",")
@@ -45,8 +58,8 @@ month = Select(title="Month to buy the house:", value="1", options=['1', '2', '3
 
 button_1 = Button(label="Submit")
 button_2 = Button(label="Reset")
-output1 = Paragraph(width=800, height=200) #or use pretext, for a <pre> tag in html
-output2 = Paragraph(width=800, height=200)
+output1 = Paragraph(width=300, height=25) #or use pretext, for a <pre> tag in html
+output2 = Paragraph(width=1000, height=25)
 
 # Set the parameters and add tools to the map
 map_options = GMapOptions(lat=47.5480, lng=-121.9836, map_type="roadmap", zoom=8)
@@ -83,7 +96,7 @@ def update():
                     model.look_up_zipcode_by_string(zipcode.value)
                }
     value = model.predict(features)
-    output1.text = 'Your house is predicted as, $' + str(value) 
+    output1.text = 'The predicted price of your house is: $' + str(value)
     sub_data = main_data[main_data.bedrooms == int(bed.value)]
     sub_data = sub_data[sub_data.bathrooms == float(bath.value)]
     #sub_data = sub_data[sub_data.zipcode == int(zipcode.value)]
@@ -94,7 +107,8 @@ def update():
     sub_data = sub_data[sub_data.yr_built > int(builtyear.value)]
     source.data = {'lat':sub_data['lat'], 'lon':sub_data['long'], 'br':sub_data['bedrooms'], 'ba':sub_data['bathrooms'], 'zipcode':sub_data['zipcode'], 'list_price':sub_data['List price'], 'final_price': sub_data['price']}
     output2.text = 'Houses with ' + str(bed.value) + ' bedrooms, ' + str(bath.value) + ' bathrooms, built after year ' + str(builtyear.value) + \
-                    ' and list price as ' + str(value) + '(+/-10000$) are shown on this map. Hover to see detail information' 
+                    ' and list price as ' + str(value) + '(+/-10000$) are shown on this map. Hover to see detail information'
+
 
 # Function to clear output
 def reset():
@@ -113,7 +127,7 @@ button_2.on_click(reset)
 update()
 
 # Define UI layout
-l1 = layout(children=[[bed, bath, builtyear, zipcode], [sqft_living, sqft_lot, waterfront, view], [grade, condition], [button_1, button_2, plot], [output1, output2]])
+l1 = layout(children=[[Logo],[delim1],[bed, bath, builtyear, zipcode], [delim2], [sqft_living, sqft_lot, waterfront, view], [delim3], [grade, condition], [delim4], [button_1, button_2], [delim5], [output1],[output2],[plot]])
 curdoc().add_root(l1)
 curdoc().title = "Predict the price of your first home"
 #tab1 = Panel(child=l1,title="Housing Price Prediction")
