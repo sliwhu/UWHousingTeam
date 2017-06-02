@@ -12,11 +12,11 @@ Then you may go to the FirstStop landing page to click the calculating monthly c
 
 from bokeh.io import curdoc, output_file, show, reset_output
 from bokeh.layouts import widgetbox, layout
-from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph
+from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Div
 import numpy as np
 import pandas as pd
 
-
+Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title_thinner.PNG" alt="" />""")
 # Create Input Controls 
 listprice = TextInput(title="enter list price/predict price here")
 mortgage_period = Select(title="Mortgage period:", value="30", options=['7', '10', '15', '20', '30'])
@@ -61,6 +61,7 @@ button_2.on_click(reset)
 #lay_out = layout([[select1, select2, select3, select4], [button_1, button_2], [output]])
 lay_out = layout(
             children=[
+            [Logo],
             [listprice],
             [mortgage_period],
             [interest_rate],

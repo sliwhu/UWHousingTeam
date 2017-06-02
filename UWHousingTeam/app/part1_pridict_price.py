@@ -53,7 +53,7 @@ view = Select(title="House view:", value="1", options=[str(x) for x in sorted(li
 condition = Select(title="House Condition:", value="3", options=[str(x) for x in sorted(list(set(main_data.condition.values)))])
 grade = Select(title="House grade:", value="3", options=[str(x) for x in sorted(list(set(main_data.grade.values)))])
 year = Select(title="Year to buy the house:", value="2017", options=['2017', '2018'])
-month = Select(title="Month to buy the house:", value="7", options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
+month = Select(title="Month to buy the house:", value="10", options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
 
 
 button_1 = Button(label="Submit")

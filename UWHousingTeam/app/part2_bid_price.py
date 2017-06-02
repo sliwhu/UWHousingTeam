@@ -10,7 +10,7 @@ Then you may go to the FirstStop landing page to click the bidding price link
 
 from bokeh.io import curdoc, output_file, show, reset_output
 from bokeh.layouts import widgetbox, layout
-from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph
+from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Div
 import numpy as np
 import pandas as pd
 
@@ -56,6 +56,7 @@ button_2.on_click(reset)
 #lay_out = layout([[select1, select2, select3, select4], [button_1, button_2], [output]])
 lay_out = layout(
             children=[
+            [Logo],
             [listprice, zipcode],
             [button_1],
             [button_2],
