@@ -27,9 +27,10 @@ class MyTestCase(unittest.TestCase):
 
     1. initialize_model
     2. build_model
-    3. prepare_model_data
-    4. prepare_test_row
-    5. read_housing_data
+    3. convert_exponential_columns
+    4. prepare_model_data
+    5. prepare_test_row
+    6. read_housing_data
     """
 
     def __init__(self, *args, **kwargs):
@@ -329,7 +330,7 @@ class MyTestCase(unittest.TestCase):
 
         # Make a prediction and check it.
         return self.assertAlmostEqual(self.house_price_model.predict(features),
-                                      546596., delta=self.price_accuracy)
+                                      625696., delta=self.price_accuracy)
 
     def test_prediction_two(self):
         """
@@ -354,7 +355,7 @@ class MyTestCase(unittest.TestCase):
 
         # Make a prediction and check it.
         return self.assertAlmostEqual(self.house_price_model.predict(features),
-                                      740494., delta=self.price_accuracy)
+                                      775624., delta=self.price_accuracy)
 
     def test_prediction_three(self):
         """
@@ -379,7 +380,7 @@ class MyTestCase(unittest.TestCase):
 
         # Make a prediction and check it.
         return self.assertAlmostEqual(self.house_price_model.predict(features),
-                                      197570., delta=self.price_accuracy)
+                                      252879., delta=self.price_accuracy)
 
 
 if __name__ == '__main__':
