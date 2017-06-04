@@ -1,6 +1,7 @@
 """
 How to use this file:
-have the data, main_data.csv, and the machine learning model file, house_price_model_2.py, in the same folder with this file
+have the data, main_data.csv, and the machine learning model file, 
+house_price_model_2.py, in the same folder with this file
 
 change data path follow instructions in the house_price_model_2.py file:
 for windows user - 
@@ -14,37 +15,33 @@ import pandas as pd
 from bokeh.io import output_file, show, save, curdoc, reset_output
 from bokeh.tile_providers import STAMEN_TONER
 from bokeh.models import (
-  GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool, Patches, HoverTool
+    GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d,
+    PanTool, WheelZoomTool, BoxSelectTool, Patches, HoverTool
 )
 from bokeh.layouts import widgetbox, layout, column
-from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, Select, Slider, Paragraph, Panel, Tabs, Div
+from bokeh.models.widgets import Button, TextInput, RadioButtonGroup, \
+    Select, Slider, Paragraph, Panel, Tabs, Div
 from bokeh.plotting import figure, show
 from house_price_model_2 import HousePriceModel
 
 model = HousePriceModel()
 model.initialize_model()
 
-#Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title.PNG" />""")
-
 Logo = Div(text="""<img src="https://s3-us-west-2.amazonaws.com/data515logo/logo_title_thinner.PNG" alt="" />""")
-#delim1 = Div(text="""<h2><span style="color: #800080;">STEP 1: Please select the first set of inputs.&nbsp;</span></h2>""")
-delim1 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 1:</span></h2>""")
+delim_1 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 1:</span></h2>""")
 delim2 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 2:</span></h2>""")
 delim3 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>STEP 3:</span></h2>""")
 delim4 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>Almost Done. Just Submit!</span></h2>""")
 delim5 = Div(text="""<h2><span style="color: #800080;" width=500 height=15>Ta Daa .....!</span></h2>""")
-#Title = Div(text="""<blockquote>
-#<h4 style="text-align: left;">You are one step closer to your dream home.&nbsp;Please enter your inputs below</h4>
-#</blockquote>""")
 
 # Import dataset, the first sheet in the merged dataset
-main_data = pd.read_csv("main_data.csv", sep = ",")
+main_data = pd.read_csv("main_data.csv", sep=",")
 
 # Create widgets
 bed = Select(title="Bedroom number:", value="3", options=['2', '3', '4', '5'])
 bath = Select(title="Bathroom number:", value="2", options=['2', '3', '4', '5'])
 builtyear = Slider(title="Built year:", value=1900, start=1900, end=2015, step=1)
-zipcode = Select(title="Zipcode:", value = "98004", options=[str(x) for x in sorted(list(set(main_data.zipcode.values)))])
+zipcode = Select(title="Zipcode:", value="98004", options=[str(x) for x in sorted(list(set(main_data.zipcode.values)))])
 sqft_living = Slider(title="Living Sqft:", value=500, start=500, end=5500, step=10)
 sqft_lot = Slider(title="Lot Sqft:", value=500, start=500, end=5500, step=10)
 waterfront = Select(title="Waterfront:", value="Either", options=['Either', 'Yes', 'No'])
@@ -127,14 +124,8 @@ button_2.on_click(reset)
 update()
 
 # Define UI layout
-l1 = layout(children=[[Logo],[delim1],[bed, bath, builtyear, zipcode], [delim2], [sqft_living, sqft_lot, waterfront, view], [delim3], [grade, condition], [delim4], [button_1, button_2], [delim5], [output1],[output2],[plot]])
+l1 = layout(children=[[Logo], [delim_1], [bed, bath, builtyear, zipcode], [delim2],
+                      [sqft_living, sqft_lot, waterfront, view], [delim3], [grade, condition],
+                      [delim4], [button_1, button_2], [delim5], [output1], [output2], [plot]])
 curdoc().add_root(l1)
 curdoc().title = "Predict the price of your first home"
-#tab1 = Panel(child=l1,title="Housing Price Prediction")
-#tab2 = Panel(child=l2,title="Bidding Price Prediction")
-
-#tabs = Tabs(tabs=[tab1, tab2])
-
-#curdoc().add_root(tabs)
-
-
