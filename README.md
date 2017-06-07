@@ -24,6 +24,10 @@ UWHousingTeam/
         |-house_price_model_2
      |- tests/
         |- ...
+  |- examples
+     |- User_Guide
+  |- logos
+     |- logo_v1  
   |- doc/
      |- FunctionalSpec
      |- Designspec
@@ -38,16 +42,14 @@ UWHousingTeam/
 
 To install FirstStop perform following steps:
 
-* git clone https://github.com/sliwhu/UWHousingTeam
-* run the setup.py file
-* to  pip install -r requirements.txt
-* cd UWHousing/Scripts
-* bokeh serve --port 5001 part1_predict_price.py
-* Open another terminal
-* cd UWHousing/Scripts
-* bokeh serve --port 5002 part2_bid_price.py
-* Open another terminal
-* cd UWHousing/Scripts
-* bokeh serve --port 5003 part3_monthly_cost.py
+* clone the repo: git clone https://github.com/sliwhu/UWHousingTeam
+* run the setup.py file: python setup.py install
+* run requirements.txt to ensure all dependencies exist : pip install -r requirements.txt
+* go to Scripts folder: cd UWHousing/Scripts
+* run bokeh server: bokeh serve --port 5001 part1_predict_price.py
+* Open another terminal and go to Scripts folder: cd UWHousing/Scripts
+* run bokeh server: bokeh serve --port 5002 part2_bid_price.py
+* Open another terminal and go to Scripts folder: cd UWHousing/Scripts
+* run bokeh server: bokeh serve --port 5003 part3_monthly_cost.py
 * go to landing page http://housing-prediction.azurewebsites.net/UWHousingTeam/html_landing_page/
 * follow the User_Guide in examples folder 
