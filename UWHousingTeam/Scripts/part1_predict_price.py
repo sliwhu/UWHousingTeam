@@ -50,20 +50,7 @@ SQFT_LIVING = Slider(title="Living Sqft:",
                      value=500, start=500, end=5500, step=10)
 SQFT_LOT = Slider(title="Lot Sqft:", value=500, start=500, end=5500, step=10)
 WATERFRONT = Select(title="Waterfront:", value="Either", options=['Either', 'Yes', 'No'])
-#renovation = Select(title="Renovation:", value="either", options=['Yes', 'No', 'either'])
-<<<<<<< HEAD
-view = Select(title="House view:", value="1", options=[str(x) for x in sorted(list(set(main_data.view.values)))])
-condition = Select(title="House Condition:", value="3", options=[str(x) for x in sorted(list(set(main_data.condition.values)))])
-grade = Select(title="House grade:", value="3", options=[str(x) for x in sorted(list(set(main_data.grade.values)))])
-year = Select(title="Year to buy the house:", value="2018", options=['2017', '2018'])
-month = Select(title="Month to buy the house:", value="3", options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'])
 
-
-button_1 = Button(label="Submit")
-button_2 = Button(label="Reset")
-output1 = Paragraph(width=300, height=25) #or use pretext, for a <pre> tag in html
-output2 = Paragraph(width=1000, height=25)
-=======
 VIEW = Select(title="House view:", value="1",
               options=[str(x) for x in sorted(list(set(MAIN_DATA.view.values)))])
 CONDITION = Select(title="House Condition:", value="3",
@@ -80,7 +67,7 @@ BUTTON_1 = Button(label="Submit")
 BUTTON_2 = Button(label="Reset")
 OUTPUT1 = Paragraph(width=300, height=25) #or use pretext, for a <pre> tag in html
 OUTPUT2 = Paragraph(width=1000, height=25)
->>>>>>> d5b5a8caecf109a9dcb640cb514774df90779c1c
+
 
 # Set the parameters and add tools to the map
 MAP_OPTIONS = GMapOptions(lat=47.5480, lng=-121.9836, map_type="roadmap", zoom=8)
