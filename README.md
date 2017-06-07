@@ -8,6 +8,7 @@ First time new buyers in this generation have some of the questions same as prev
 
 The project has the following structure:
 
+```
 UWHousingTeam/
   |- README.md
   |- UWHousingTeam/
@@ -32,8 +33,7 @@ UWHousingTeam/
   |- setup.py
   |- LICENSE
   |- requirements.txt
-     
-
+```
 ### Installation
 
 To install FirstStop perform following steps:
