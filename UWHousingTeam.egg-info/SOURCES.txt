@@ -1,0 +1,5 @@
+setup.py
+UWHousingTeam.egg-info/PKG-INFO
+UWHousingTeam.egg-info/SOURCES.txt
+UWHousingTeam.egg-info/dependency_links.txt
+UWHousingTeam.egg-info/top_level.txt
